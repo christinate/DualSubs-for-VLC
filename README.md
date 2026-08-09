@@ -31,6 +31,8 @@ Important:
   Basic verification helpers and sample subtitle fixtures.
 - `Update.md`
   The platform-by-platform rebuild and update playbook.
+- `RELEASING.md`
+  The GitHub Release checklist and asset publishing guide.
 
 ## Build Overview
 
@@ -43,7 +45,7 @@ Important:
 
 3. Follow [Update.md](Update.md) and the platform packaging READMEs.
 4. Build installers locally and on the remote builders as documented.
-5. Publish the finished `.exe`, `.pkg`, and `.deb` files as GitHub Release assets.
+5. Publish the finished `.exe`, `.pkg`, and `.deb` files as GitHub Release assets by following [RELEASING.md](RELEASING.md).
 
 ## Release Model
 

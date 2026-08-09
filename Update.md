@@ -359,6 +359,11 @@ Validated installer artifacts currently in this workspace:
 - macOS: `C:\Users\Nate Fowler\Documents\VLC Plugin\packaging\macos\dist\DualSubs-for-VLC-3.0.23-macOS-Overlay.pkg`
 - Linux: `C:\Users\Nate Fowler\Documents\VLC Plugin\packaging\linux\dist\vlc-dualsubs_3.0.23+dualsubs0.1.0-1_amd64.deb`
 
+GitHub publishing note:
+
+- Release assets should be uploaded through GitHub Releases after the source commit is pushed.
+- See `RELEASING.md` for the publishing checklist, tag flow, and checksum procedure.
+
 ## Cross-Version Update Workflow
 
 Use this every time VLC releases a new version.
