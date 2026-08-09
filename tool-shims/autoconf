@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/autoconf-2.71 "$@"

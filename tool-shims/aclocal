@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/aclocal-1.15 "$@"

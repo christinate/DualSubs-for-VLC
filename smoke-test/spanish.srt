@@ -1,0 +1,7 @@
+1
+00:00:00,000 --> 00:00:02,000
+Hola desde la pista dos.
+
+2
+00:00:02,000 --> 00:00:04,000
+DualSubs debe colocar esto debajo de la pista uno.

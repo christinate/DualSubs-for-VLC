@@ -1,0 +1,8 @@
+1
+00:00:00,000 --> 00:00:02,000
+Hello from track one.
+
+2
+00:00:02,000 --> 00:00:04,000
+DualSubs should place this above track two.
+

@@ -1,0 +1,55 @@
+﻿{
+    "dualSubsVersion":  "0.1.0",
+    "vlcVersion":  "0.0.0",
+    "generatedAt":  "2026-07-23T23:25:53.5604803+00:00",
+    "files":  [
+                  {
+                      "relativePath":  "libvlc.dll",
+                      "sha256":  "8F11362A8695B875277FBD0F5C40A758ABF917A57EC3E705CB7B7BE4818F8DA7",
+                      "fileVersion":  "3.0.23",
+                      "length":  440959
+                  },
+                  {
+                      "relativePath":  "libvlccore.dll",
+                      "sha256":  "BD55D10FB463EA7D5A3E356A3E343E04882C711624979746B4D144DEC75513DC",
+                      "fileVersion":  "3.0.23",
+                      "length":  9239176
+                  },
+                  {
+                      "relativePath":  "plugins/gui/libqt_plugin.dll",
+                      "sha256":  "5421001548618B3DF54F70C7EE8C416B4844DF58C61E920FDA65BD54313562FE",
+                      "fileVersion":  "3.0.23",
+                      "length":  23742153
+                  },
+                  {
+                      "relativePath":  "plugins/codec/liblibass_plugin.dll",
+                      "sha256":  "3773AEF43EC98194E54E0EF656A5D8D93C27FC45897922F1E1BF565A620AF7BE",
+                      "fileVersion":  "3.0.23",
+                      "length":  12251023
+                  },
+                  {
+                      "relativePath":  "plugins/codec/libsubsdec_plugin.dll",
+                      "sha256":  "4FBF74B0FBE52D53DD7DDC2D18F53885E46AB43B2A0FD534E20978083A907F1A",
+                      "fileVersion":  "3.0.23",
+                      "length":  274014
+                  },
+                  {
+                      "relativePath":  "plugins/codec/libsubstx3g_plugin.dll",
+                      "sha256":  "644A5F8FAE76455CEE17211555F2FD4CC8FCD8742D69BE4A280D590FE9E6E782",
+                      "fileVersion":  "3.0.23",
+                      "length":  116038
+                  },
+                  {
+                      "relativePath":  "plugins/codec/libttml_plugin.dll",
+                      "sha256":  "C32EA494210E1EB7060F9A7076FF68F4B0E69419CB4102583FB51C701C7D8068",
+                      "fileVersion":  "3.0.23",
+                      "length":  488393
+                  },
+                  {
+                      "relativePath":  "plugins/codec/libwebvtt_plugin.dll",
+                      "sha256":  "0C487B5FCB14ECA8D058F5D206B2DE65D498115EB4B94FA690E8F40E7E53B866",
+                      "fileVersion":  "3.0.23",
+                      "length":  572656
+                  }
+              ]
+}

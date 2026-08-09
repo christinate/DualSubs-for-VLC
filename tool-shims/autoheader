@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/autoheader-2.71 "$@"
