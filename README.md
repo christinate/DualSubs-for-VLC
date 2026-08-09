@@ -11,7 +11,15 @@ DualSubs lets you:
 - use different fallback colors per track when the subtitle text does not already define its own color
 - preserve authored subtitle colors when they are present
 
-## What Changed
+## Installation
+
+Download the VLC version 3.0.23 for your operating system and install. If they have since updated, the archive is here https://download.videolan.org/pub/videolan/vlc/3.0.23/
+Then download the release installer for your OS and install from here:
+https://github.com/christinate/DualSubs-for-VLC/releases
+Tada! 
+
+
+## What Was Changed
 
 This repository tracks the DualSubs source overlay in:
 
@@ -37,7 +45,7 @@ Main DualSubs feature files:
 - `ASS/SSA` is forced into bottom-stacked DualSubs placement when used through the new menu, so authored positioning is intentionally ignored in DualSubs mode.
 - Bitmap subtitle formats such as `PGS` and `VobSub` are not part of this first pass.
 
-## Build
+## Build your own
 
 1. Download and extract the official VLC `3.0.23` source locally under `upstream/vlc-3.0.23/`.
 2. Apply the tracked DualSubs overlay:
@@ -55,4 +63,3 @@ High-level packaging flow:
 - macOS builds an unsigned overlay `pkg` for an existing `/Applications/VLC.app`.
 - Linux builds a separate `vlc-dualsubs` package under `/opt/vlc-dualsubs`.
 
-GitHub stores the source and build scripts for this project, but it does not build VLC automatically just from a push. Built installers should be published as GitHub Release assets after they are created locally.
