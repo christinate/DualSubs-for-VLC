@@ -1,40 +1,43 @@
-# DualSubs for VLC
+# DualSubs for VLC 3.0.23
 
-DualSubs is a VLC source patch plus packaging/install tooling that adds a top-level `DualSubs` menu and allows two text subtitle tracks to render at the same time.
+DualSubs is a VLC source patch for `3.0.23` that adds a new top-level desktop menu named `DualSubs`.
 
-Important:
+DualSubs lets you:
 
-- This is not a standalone VLC plugin DLL or Lua extension.
-- VLC `3.0.23` required source changes in the input, subtitle, and desktop UI layers.
-- The Git repository should track source overlays, packaging scripts, assets, and tests.
-- Built installers should be published as GitHub Release assets, not committed into normal source history.
+- choose up to two subtitle tracks from the current media
+- keep VLC's normal `Subtitle` menu working as a single-track selector
+- render the first checked track above the second checked track
+- wait until exactly two tracks are checked before showing any subtitles
+- use different fallback colors per track when the subtitle text does not already define its own color
+- preserve authored subtitle colors when they are present
 
-## Behavior
+## What Changed
 
-- The user can check up to two subtitle tracks from the current media.
-- Subtitles stay hidden until exactly two tracks are selected.
-- Track 1 renders above track 2.
-- Both tracks stay bottom-aligned.
-- Authored subtitle colors are preserved when present.
-- Fallback colors differ when authored colors are absent.
-- ASS/SSA positioning is intentionally ignored in DualSubs mode so stacking remains correct.
-
-## Repository Layout
+This repository tracks the DualSubs source overlay in:
 
 - `source-overlay/vlc-3.0.23/`
-  The Git-tracked copy of the VLC source files and helper patches changed by DualSubs.
-- `packaging/`
-  Windows NSIS, macOS pkg, and Linux deb packaging scripts.
-- `assets/branding/`
-  DualSubs icons, logo, and branding source files.
-- `smoke-test/`
-  Basic verification helpers and sample subtitle fixtures.
-- `Update.md`
-  The platform-by-platform rebuild and update playbook.
-- `RELEASING.md`
-  The GitHub Release checklist and asset publishing guide.
 
-## Build Overview
+Main DualSubs feature files:
+
+- `src/input/var.c`
+- `src/input/es_out.c`
+- `src/input/decoder.c`
+- `modules/codec/substext.h`
+- `modules/codec/libass.c`
+- `modules/gui/qt/menus.hpp`
+- `modules/gui/qt/menus.cpp`
+- `modules/gui/macosx/VLCMainMenu.m`
+
+## Behavior Notes
+
+- This is a VLC source patch, not a Lua extension or standalone drop-in binary plugin.
+- Qt desktop VLC gets the `DualSubs` menu for Windows and Linux.
+- Native macOS VLC gets the same `DualSubs` top-level menu.
+- Text subtitle focus is implemented first: `SRT`, `ASS/SSA`, `WebVTT`, and other text-decoded subtitle paths that flow through VLC's text subtitle stack.
+- `ASS/SSA` is forced into bottom-stacked DualSubs placement when used through the new menu, so authored positioning is intentionally ignored in DualSubs mode.
+- Bitmap subtitle formats such as `PGS` and `VobSub` are not part of this first pass.
+
+## Build
 
 1. Download and extract the official VLC `3.0.23` source locally under `upstream/vlc-3.0.23/`.
 2. Apply the tracked DualSubs overlay:
@@ -43,10 +46,13 @@ Important:
 .\tools\apply-source-overlay.ps1
 ```
 
-3. Follow [Update.md](Update.md) and the platform packaging READMEs.
-4. Build installers locally and on the remote builders as documented.
-5. Publish the finished `.exe`, `.pkg`, and `.deb` files as GitHub Release assets by following [RELEASING.md](RELEASING.md).
+3. Build VLC from that patched working tree.
+4. Use the platform packaging scripts under `packaging/windows`, `packaging/macos`, and `packaging/linux`.
 
-## Release Model
+High-level packaging flow:
 
-GitHub will store the source and docs in the repository, but it will not build VLC for us automatically just by pushing code. If we want downloadable installers on GitHub, we upload the already-built artifacts to a GitHub Release after the source commit is pushed.
+- Windows builds an overlay installer for an existing VLC install.
+- macOS builds an unsigned overlay `pkg` for an existing `/Applications/VLC.app`.
+- Linux builds a separate `vlc-dualsubs` package under `/opt/vlc-dualsubs`.
+
+GitHub stores the source and build scripts for this project, but it does not build VLC automatically just from a push. Built installers should be published as GitHub Release assets after they are created locally.

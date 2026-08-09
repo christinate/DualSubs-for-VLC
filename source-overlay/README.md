@@ -13,7 +13,7 @@ The repo tracks this overlay instead of the full unpacked VLC source tree so Git
 .\tools\apply-source-overlay.ps1
 ```
 
-3. Build from the local `upstream/vlc-3.0.23/` tree by following [../Update.md](../Update.md).
+3. Build from the local `upstream/vlc-3.0.23/` tree using the platform scripts under `packaging/`.
 4. If you edit the working tree, copy those changes back here before staging:
 
 ```powershell

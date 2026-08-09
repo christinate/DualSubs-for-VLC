@@ -13,6 +13,8 @@ packaging/linux/dist/
 tools/msys64/
 tools/msys2-base-*.sfx.exe
 DUALSUBS_README.md
+RELEASING.md
+Update.md
 pushtogit.md
 tools/stage-pushtogit.ps1
 tmp-errors-qt56.moc.cpp
