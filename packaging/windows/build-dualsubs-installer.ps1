@@ -2,8 +2,8 @@
 param(
     [string]$RuntimeRoot,
     [string]$OutputRoot,
-    [string]$DualSubsVersion = '0.1.0',
-    [string]$VlcVersion = '3.0.23',
+    [string]$DualSubsVersion = '0.2.0',
+    [string]$VlcVersion = '3.0.24',
     [string]$MakensisPath,
     [switch]$SkipCompile
 )
@@ -12,7 +12,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 if (-not $RuntimeRoot) {
-    $RuntimeRoot = Join-Path $PSScriptRoot '..\..\runtime\VLC-DualSubs'
+    $RuntimeRoot = Join-Path $PSScriptRoot '..\..\runtime\VLC-DualSubs-3.0.24'
 }
 if (-not $OutputRoot) {
     $OutputRoot = Join-Path $PSScriptRoot 'dist'

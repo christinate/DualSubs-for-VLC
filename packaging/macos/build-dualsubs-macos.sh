@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.23"
+SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.24"
 BUILD_DIR="${1:-$SRC_DIR/build-macos-dualsubs}"
 HOST_ARCH="$(uname -m 2>/dev/null || echo x86_64)"
 case "$HOST_ARCH" in

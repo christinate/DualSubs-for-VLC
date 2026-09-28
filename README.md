@@ -1,6 +1,6 @@
-# DualSubs for VLC 3.0.23
+# DualSubs for VLC 3.0.24
 
-DualSubs is a VLC source patch for `3.0.23` that adds a new top-level desktop menu named `DualSubs`.
+DualSubs is a VLC source patch for `3.0.24` that adds a new top-level desktop menu named `DualSubs`.
 
 DualSubs lets you:
 
@@ -13,7 +13,7 @@ DualSubs lets you:
 
 ## Installation
 
-Download the VLC version 3.0.23 for your operating system and install. If they have since updated, the archive is here https://download.videolan.org/pub/videolan/vlc/3.0.23/
+Download VLC version 3.0.24 for your operating system and install. The official archive is at https://download.videolan.org/pub/videolan/vlc/3.0.24/
 Then download the release installer for your OS and install from here:
 https://github.com/christinate/DualSubs-for-VLC/releases
 Tada! 
@@ -23,7 +23,7 @@ Tada!
 
 This repository tracks the DualSubs source overlay in:
 
-- `source-overlay/vlc-3.0.23/`
+- `source-overlay/vlc-3.0.24/`
 
 Main DualSubs feature files:
 
@@ -47,7 +47,7 @@ Main DualSubs feature files:
 
 ## Build your own
 
-1. Download and extract the official VLC `3.0.23` source locally under `upstream/vlc-3.0.23/`.
+1. Download and extract the official VLC `3.0.24` source locally under `upstream/vlc-3.0.24/`.
 2. Apply the tracked DualSubs overlay:
 
 ```powershell
@@ -62,4 +62,3 @@ High-level packaging flow:
 - Windows builds an overlay installer for an existing VLC install.
 - macOS builds an unsigned overlay `pkg` for an existing `/Applications/VLC.app`.
 - Linux builds a separate `vlc-dualsubs` package under `/opt/vlc-dualsubs`.
-

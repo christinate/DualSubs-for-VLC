@@ -2,14 +2,14 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.23"
+SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.24"
 BUILD_DIR="${1:-$SRC_DIR/build-linux-dualsubs}"
 BUILD_ROOT="$ROOT_DIR/packaging/linux/build-deb"
 OUTPUT_ROOT="$ROOT_DIR/packaging/linux/dist"
 INSTALL_PREFIX="${INSTALL_PREFIX:-/opt/vlc-dualsubs}"
 STAGE_PREFIX="${STAGE_PREFIX:-/usr/local}"
-DUALSUBS_VERSION="${DUALSUBS_VERSION:-0.1.0}"
-VLC_VERSION="${VLC_VERSION:-3.0.23}"
+DUALSUBS_VERSION="${DUALSUBS_VERSION:-0.2.0}"
+VLC_VERSION="${VLC_VERSION:-3.0.24}"
 PACKAGE_VERSION="${PACKAGE_VERSION:-${VLC_VERSION}+dualsubs${DUALSUBS_VERSION}-1}"
 PACKAGE_NAME="${PACKAGE_NAME:-vlc-dualsubs}"
 ARCH="${ARCH:-$(dpkg --print-architecture)}"
@@ -21,7 +21,11 @@ OUTPUT_DEB="$OUTPUT_ROOT/${PACKAGE_NAME}_${PACKAGE_VERSION}_${ARCH}.deb"
 compute_dependencies() {
   local install_root="$1"
   local -a elf_files=()
+  local -a dependencies=()
+  local dependency
+  local depends_output
   local file_path
+  local joined_dependencies=""
   local shlib_output
 
   if ! command -v dpkg-shlibdeps >/dev/null 2>&1; then
@@ -38,11 +42,33 @@ compute_dependencies() {
     return 0
   fi
 
-  if ! shlib_output="$(dpkg-shlibdeps -O -l"$install_root/lib" "${elf_files[@]}" 2>/dev/null)"; then
-    return 0
+  if ! shlib_output="$(
+    cd "$BUILD_ROOT"
+    dpkg-shlibdeps -O -S"$PACKAGE_ROOT" \
+      -l"$install_root/lib" \
+      -l"$install_root/lib/vlc" \
+      "${elf_files[@]}"
+  )"; then
+    echo "dpkg-shlibdeps failed while resolving package dependencies." >&2
+    return 1
   fi
 
-  printf '%s\n' "$shlib_output" | sed -n 's/^shlibs:Depends=//p'
+  depends_output="$(printf '%s\n' "$shlib_output" | sed -n 's/^shlibs:Depends=//p')"
+  IFS=',' read -r -a dependencies <<<"$depends_output"
+  for dependency in "${dependencies[@]}"; do
+    dependency="${dependency#"${dependency%%[![:space:]]*}"}"
+    case "$dependency" in
+      libvlc5*|libvlccore9*)
+        continue
+        ;;
+    esac
+    if [[ -n "$dependency" ]]; then
+      [[ -z "$joined_dependencies" ]] || joined_dependencies+=", "
+      joined_dependencies+="$dependency"
+    fi
+  done
+
+  printf '%s\n' "$joined_dependencies"
 }
 
 if [[ ! -f "$BUILD_DIR/Makefile" ]]; then
@@ -101,7 +127,21 @@ EOF
 
 cp "$ROOT_DIR/assets/branding/dualsubs-icon.png" "$PACKAGE_ROOT/usr/share/icons/hicolor/512x512/apps/vlc-dualsubs.png"
 
-depends_line="$(compute_dependencies "$PACKAGE_ROOT$INSTALL_PREFIX" || true)"
+mkdir -p "$BUILD_ROOT/debian"
+cat > "$BUILD_ROOT/debian/control" <<EOF
+Source: $PACKAGE_NAME
+Section: video
+Priority: optional
+Maintainer: DualSubs Open Source Contributors
+Standards-Version: 4.6.2
+
+Package: $PACKAGE_NAME
+Architecture: any
+Description: VLC with DualSubs support
+ VLC build installed separately under $INSTALL_PREFIX.
+EOF
+
+depends_line="$(compute_dependencies "$PACKAGE_ROOT$INSTALL_PREFIX")"
 
 {
   echo "Package: $PACKAGE_NAME"

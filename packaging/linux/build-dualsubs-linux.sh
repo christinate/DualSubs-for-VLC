@@ -2,28 +2,52 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.23"
+SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.24"
 BUILD_DIR="${1:-$SRC_DIR/build-linux-dualsubs}"
 JOBS="${JOBS:-$(command -v nproc >/dev/null 2>&1 && nproc || echo 4)}"
+CONTRIB_JOBS="${CONTRIB_JOBS:-1}"
 CC_BIN="${CC:-gcc}"
 HOST_TRIPLET="${HOST_TRIPLET:-$("$CC_BIN" -dumpmachine)}"
 CONTRIB_BUILD_DIR="$SRC_DIR/contrib/contrib-$HOST_TRIPLET"
 CONTRIB_INSTALL_DIR="$SRC_DIR/contrib/$HOST_TRIPLET"
+LOCAL_GIT_ROOT="$ROOT_DIR/.build-tools/git"
+LOCAL_GPERF_ROOT="$ROOT_DIR/.build-tools/gperf"
 
 if [[ ! -d "$SRC_DIR" ]]; then
   echo "VLC source tree not found at $SRC_DIR" >&2
   exit 1
 fi
 
+if ! command -v git >/dev/null 2>&1 && [[ -x "$LOCAL_GIT_ROOT/usr/bin/git" ]]; then
+  export PATH="$LOCAL_GIT_ROOT/usr/bin:$PATH"
+  export GIT_EXEC_PATH="$LOCAL_GIT_ROOT/usr/lib/git-core"
+fi
+
+if ! command -v git >/dev/null 2>&1; then
+  echo "Git is required to prepare VLC 3.0.24 contrib sources." >&2
+  echo "Install git or unpack it under $LOCAL_GIT_ROOT." >&2
+  exit 1
+fi
+
+if ! command -v gperf >/dev/null 2>&1 && [[ -x "$LOCAL_GPERF_ROOT/usr/bin/gperf" ]]; then
+  export PATH="$LOCAL_GPERF_ROOT/usr/bin:$PATH"
+fi
+
+if ! command -v gperf >/dev/null 2>&1; then
+  echo "gperf is required to build VLC's fontconfig contrib." >&2
+  echo "Install gperf or unpack it under $LOCAL_GPERF_ROOT." >&2
+  exit 1
+fi
+
 # DualSubs only needs playback-side functionality, so we skip git-backed
 # encoder contribs on minimal hosts unless the caller explicitly re-enables them.
-contrib_bootstrap_args=(--host="$HOST_TRIPLET" --disable-x264 --disable-x26410b)
+contrib_bootstrap_args=(--host="$HOST_TRIPLET" --disable-x264 --disable-x26410b --disable-sdl --disable-SDL_image --disable-zvbi)
 if [[ -n "${CONTRIB_BOOTSTRAP_FLAGS:-}" ]]; then
   read -r -a contrib_bootstrap_extra <<<"${CONTRIB_BOOTSTRAP_FLAGS}"
   contrib_bootstrap_args+=("${contrib_bootstrap_extra[@]}")
 fi
 
-configure_args=(--with-contrib="$CONTRIB_INSTALL_DIR" --enable-qt --disable-alsa --disable-vnc --disable-vcd --disable-chromaprint)
+configure_args=(--with-contrib="$CONTRIB_INSTALL_DIR" --enable-qt --disable-alsa --disable-vnc --disable-vcd --disable-chromaprint --disable-sdl-image --disable-zvbi)
 if [[ -n "${EXTRA_CONFIGURE_FLAGS:-}" ]]; then
   read -r -a extra_configure_args <<<"${EXTRA_CONFIGURE_FLAGS}"
   configure_args+=("${extra_configure_args[@]}")
@@ -39,6 +63,10 @@ echo "[build] Bootstrapping extras/tools with $JOBS jobs"
 )
 
 export PATH="$SRC_DIR/extras/tools/build/bin:$PATH"
+
+# Keep the contrib make graph serial to avoid nested jobserver failures, while
+# allowing CMake-based dependencies to compile with the host's available cores.
+export CMAKE_BUILD_PARALLEL_LEVEL="${CMAKE_BUILD_PARALLEL_LEVEL:-$JOBS}"
 
 if [[ ! -f "$SRC_DIR/extras/tools/build/share/aclocal/pkg.m4" ]]; then
   mkdir -p "$SRC_DIR/extras/tools/build/share/aclocal"
@@ -64,7 +92,7 @@ mkdir -p "$CONTRIB_BUILD_DIR"
     make prebuilt PREBUILT_URL="$CONTRIB_PREBUILT_URL"
   else
     make -j"$JOBS" --output-sync=recurse fetch
-    make -j"$JOBS" --output-sync=recurse
+    make -j"$CONTRIB_JOBS"
   fi
 )
 

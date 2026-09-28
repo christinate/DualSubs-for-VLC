@@ -215,7 +215,7 @@ try {
 }
 
 Reset-TestInstallTree
-$versionMismatchManifestPath = Join-Path $testRoot 'payload-manifest-version-mismatch.json'
+$versionMismatchManifestPath = Join-Path $stageRoot 'payload-manifest-version-mismatch.json'
 $versionMismatchManifest = Get-Content -LiteralPath $payloadManifestPath -Raw | ConvertFrom-Json
 $versionMismatchManifest.vlcVersion = '0.0.0'
 $versionMismatchManifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $versionMismatchManifestPath -Encoding UTF8

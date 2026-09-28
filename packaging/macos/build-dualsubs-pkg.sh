@@ -2,12 +2,12 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.23"
+SRC_DIR="$ROOT_DIR/upstream/vlc-3.0.24"
 BUILD_ROOT="$ROOT_DIR/packaging/macos/build-pkg"
 OUTPUT_ROOT="$ROOT_DIR/packaging/macos/dist"
 SUPPORT_DIR_REL="Library/Application Support/DualSubs for VLC"
-DUALSUBS_VERSION="${DUALSUBS_VERSION:-0.1.0}"
-VLC_VERSION="${VLC_VERSION:-3.0.23}"
+DUALSUBS_VERSION="${DUALSUBS_VERSION:-0.2.0}"
+VLC_VERSION="${VLC_VERSION:-3.0.24}"
 PACKAGE_ID="${PACKAGE_ID:-org.dualsubs.vlc.overlay}"
 SOURCE_APP="${1:-}"
 

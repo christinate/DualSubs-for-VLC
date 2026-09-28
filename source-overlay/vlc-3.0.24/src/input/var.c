@@ -889,4 +889,3 @@ static int FrameNextCallback( vlc_object_t *p_this, char const *psz_cmd,
 
     return VLC_SUCCESS;
 }
-

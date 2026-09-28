@@ -21,6 +21,10 @@ That wrapper delegates to VLC's existing macOS packaging script:
 
 - `extras/package/macosx/build.sh`
 
+The tracked 3.0.24 build-script overlay compiles contribs serially. This avoids
+resource exhaustion and invalid jobserver descriptors on the ARM64 builder;
+the final VLC compile still uses all configured jobs.
+
 Installer packaging entry point:
 
 ```bash
@@ -40,5 +44,5 @@ Validated builder:
 
 Validated outputs:
 
-- built app bundle: `~/dualsubs-build/upstream/vlc-3.0.23/build-macos-dualsubs-aarch64/VLC.app`
-- packaged installer: `~/dualsubs-build/packaging/macos/dist/DualSubs-for-VLC-3.0.23-macOS-Overlay.pkg`
+- built app bundle: `~/dualsubs-build/upstream/vlc-3.0.24/build-macos-dualsubs/VLC.app`
+- packaged installer: `~/dualsubs-build/packaging/macos/dist/DualSubs-for-VLC-3.0.24-macOS-Overlay.pkg`

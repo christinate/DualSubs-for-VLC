@@ -1,6 +1,6 @@
 # DualSubs Windows Packaging
 
-This folder builds a Windows NSIS overlay installer for the DualSubs-enabled VLC 3.0.23 runtime.
+This folder builds a Windows NSIS overlay installer for the DualSubs-enabled VLC 3.0.24 runtime.
 
 What it does:
 
@@ -12,6 +12,7 @@ What it does:
 
 Primary scripts:
 
+- `build-dualsubs-windows.ps1` builds the patched VLC source and stages the eight changed binaries
 - `build-dualsubs-installer.ps1` builds the payload, writes the manifest, and compiles the installer with `makensis.exe`
 - `DualSubsOverlay.nsi` is the NSIS installer definition
 - `Install-DualSubs.ps1` performs the overlay install
@@ -21,8 +22,20 @@ Primary scripts:
 Usage:
 
 ```powershell
+.\packaging\windows\build-dualsubs-windows.ps1
 .\packaging\windows\build-dualsubs-installer.ps1
 .\packaging\windows\test-dualsubs-installer.ps1
 ```
+
+The default payload source is `runtime/VLC-DualSubs-3.0.24`. Build VLC first,
+then stage the eight changed binaries there before creating or testing the installer.
+
+The source build intentionally compiles only `libvlc`, `libvlccore`, the Qt UI,
+and the six subtitle plugins shipped by the overlay. Pass a prepared VLC
+`x86_64-w64-mingw32` contrib tree inside this workspace with `-ContribRoot` on
+a clean build machine. The workspace-local path is required by the temporary
+`V:` alias used to keep MinGW paths free of spaces.
+This avoids rebuilding unrelated codecs and keeps the overlay compatible with
+the stock VLC 3.0.24 installation it patches.
 
 The packaged installer is written to `packaging/windows/dist/`.

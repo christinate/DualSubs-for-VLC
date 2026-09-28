@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
-    [string]$OverlayRoot = (Join-Path $PSScriptRoot '..\source-overlay\vlc-3.0.23'),
-    [string]$TargetRoot = (Join-Path $PSScriptRoot '..\upstream\vlc-3.0.23')
+    [string]$OverlayRoot = (Join-Path $PSScriptRoot '..\source-overlay\vlc-3.0.24'),
+    [string]$TargetRoot = (Join-Path $PSScriptRoot '..\upstream\vlc-3.0.24')
 )
 
 Set-StrictMode -Version Latest
